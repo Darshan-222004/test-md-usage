@@ -1,18 +1,18 @@
-name: Test Darshan Markdown Improver
+name: Improve Markdown
 
 on:
   push:
-    branches: [main]  # or manually trigger with workflow_dispatch
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  improve-md:
+  improve-markdown:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Use Darshan's Markdown Improver Action
+      - name: Use the Markdown Improver Action
         uses: Darshan-222004/darshan-md-improver@v2
         with:
           repo: "https://github.com/Darshan-222004/test-md-usage.git"
           mdfile: "sample.md"
           purpose: "Introduce a programming concept"
-
