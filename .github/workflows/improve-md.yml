@@ -10,9 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout the target repository
+        uses: actions/checkout@v3
+        with:
+          repository: "Darshan-222004/test-md-usage"  # Specify the repo where the markdown file is located
+          token: ${{ secrets.GITHUB_TOKEN }}  # You can provide a token if the repository is private
+
       - name: Use the Markdown Improver Action
         uses: Darshan-222004/darshan-md-improver@v2
         with:
-          repo: "https://github.com/Darshan-222004/test-md-usage.git"
-          mdfile: "sample.md"
-          purpose: "Introduce a programming concept"
+          repo: "https://github.com/Darshan-222004/test-md-usage"  # The repo to be improved (no need to clone)
+          mdfile: "sample.md"  # The path of the markdown file to improve
+          purpose: "Introduce a programming concept"  # Purpose of improvement
