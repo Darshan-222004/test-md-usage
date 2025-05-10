@@ -1,24 +1,40 @@
-name: Improve Markdown
+name: Improve Markdown File
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  improve-markdown:
+  improve-md:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout the target repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          repository: "Darshan-222004/test-md-usage"  # Specify the repo where the markdown file is located
-          token: ${{ secrets.GITHUB_TOKEN }}  # You can provide a token if the repository is private
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Use the Markdown Improver Action
+      - name: Improve README.md
         uses: Darshan-222004/darshan-md-improver@v2
         with:
-          repo: "https://github.com/Darshan-222004/test-md-usage"  # The repo to be improved (no need to clone)
-          mdfile: "sample.md"  # The path of the markdown file to improve
-          purpose: "Introduce a programming concept"  # Purpose of improvement
+          repo: https://github.com/Darshan-222004/darshan-md-improver
+          mdfile: README.md
+          purpose: introduce a programming concept
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git add README.md
+          git commit -m "Improved markdown file: README.md for purpose: introduce a programming concept" || echo "No changes to commit"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:main
