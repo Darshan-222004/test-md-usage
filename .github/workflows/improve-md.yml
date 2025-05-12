@@ -2,28 +2,27 @@ name: Improve Markdown File
 
 on:
   workflow_dispatch:
-    inputs:
-      purpose:
-        description: 'Purpose of improvement'
-        required: true
-        default: 'improve clarity'
+
+permissions:
+  contents: write
 
 jobs:
   improve-md:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # Required for pushing changes
-
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Run Markdown Improver
-        uses: Darshan-222004/darshan-md-improver@v2
-        with:
-          repo: ${{ github.repository }}
-          mdfile: README.md
-          purpose: ${{ inputs.purpose }}
-          token: ${{ secrets.GITHUB_TOKEN }}
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Must be set in repo secrets!
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Critical: Must pass this
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          chmod +x ./entrypoint.sh
+          ./entrypoint.sh \
+            "https://github.com/${{ github.repository }}" \
+            "README.md" \
+            "introduce a programming concept" \
+            "${{ secrets.GH_TOKEN }}"
