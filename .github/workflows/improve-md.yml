@@ -2,17 +2,28 @@ name: Improve Markdown File
 
 on:
   workflow_dispatch:
+    inputs:
+      purpose:
+        description: 'Purpose of improvement'
+        required: true
+        default: 'improve clarity'
 
 jobs:
   improve-md:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required for pushing changes
 
     steps:
-      - name: Use Markdown Improver
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Run Markdown Improver
         uses: Darshan-222004/darshan-md-improver@v2
         with:
-          repo: https://github.com/Darshan-222004/your-target-repo
+          repo: ${{ github.repository }}
           mdfile: README.md
-          purpose: introduce a programming concept
+          purpose: ${{ inputs.purpose }}
+          token: ${{ secrets.GITHUB_TOKEN }}
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Must be set in repo secrets!
