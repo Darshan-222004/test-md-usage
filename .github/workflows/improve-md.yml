@@ -1,24 +1,31 @@
-name: Improve Markdown File
-on: workflow_dispatch
+# .github/workflows/improve-md.yml
+name: Test Markdown Improver
+on: 
+  workflow_dispatch:
+    inputs:
+      mdfile:
+        description: 'Markdown file to improve'
+        required: true
+        default: 'README.md'
 
 jobs:
-  improve-md:
+  improve:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Required for git history
 
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Run Markdown Improver
+      - name: Run Improvement
         uses: Darshan-222004/darshan-md-improver@main
         with:
           repo: "${{ github.repository }}"
-          mdfile: "README.md"
-          purpose: "introduce a programming concept"
+          mdfile: "${{ inputs.mdfile }}"
+          purpose: "enhance documentation"
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
