@@ -1,9 +1,8 @@
-# .github/workflows/improve-md.yml
-name: Test Markdown Improver
-on: 
+name: Improve Markdown
+on:
   workflow_dispatch:
     inputs:
-      mdfile:
+      filename:
         description: 'Markdown file to improve'
         required: true
         default: 'README.md'
@@ -20,11 +19,17 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Run Improvement
+      - name: Debug workspace
+        run: |
+          echo "Workspace contents:"
+          ls -la
+          echo "Current path: $(pwd)"
+
+      - name: Run Markdown Improver
         uses: Darshan-222004/darshan-md-improver@main
         with:
           repo: "${{ github.repository }}"
-          mdfile: "${{ inputs.mdfile }}"
+          mdfile: "${{ inputs.filename }}"
           purpose: "enhance documentation"
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
