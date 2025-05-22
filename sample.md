@@ -1,6 +1,6 @@
 # Sample Documentation
 
-This is a test markdown file. It needs improvement in:
+This document serves as a sample markdown file for testing purposes. It aims to demonstrate the need for improvement in the following areas:
 
 - Clarity
 - Structure
