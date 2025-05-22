@@ -5,7 +5,10 @@ on:
       filename:
         description: 'Markdown file to improve'
         required: true
-        default: 'README.md'
+        default: 'sample.md'
+
+permissions:
+  contents: write
 
 jobs:
   improve:
@@ -13,24 +16,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Required for git history
+          fetch-depth: 0
 
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-
-      - name: Debug workspace
-        run: |
-          echo "Workspace contents:"
-          ls -la
-          echo "Current path: $(pwd)"
 
       - name: Run Markdown Improver
         uses: Darshan-222004/darshan-md-improver@main
         with:
           repo: "${{ github.repository }}"
           mdfile: "${{ inputs.filename }}"
-          purpose: "enhance documentation"
+          purpose: "better documentation"
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_TOKEN: ${{ github.token }}
