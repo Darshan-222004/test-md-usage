@@ -12,17 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           token: ${{ secrets.GH_TOKEN }}
 
-      - name: Run Markdown Improver
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Critical: Must pass this
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          chmod +x ./entrypoint.sh
-          ./entrypoint.sh \
-            "https://github.com/${{ github.repository }}" \
-            "README.md" \
-            "introduce a programming concept" \
-            "${{ secrets.GH_TOKEN }}"
+      - name: Improve Markdown using local action
+        uses: ./
+        with:
+          repo: "https://github.com/${{ github.repository }}"
+          mdfile: "README.md"
+          purpose: "introduce a programming concept"
+          token: ${{ secrets.GH_TOKEN }}
