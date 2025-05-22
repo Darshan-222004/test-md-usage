@@ -1,28 +1,19 @@
 name: Improve Markdown File
-
-on:
-  workflow_dispatch:
-
-permissions:
-  contents: write
+on: workflow_dispatch
 
 jobs:
   improve-md:
     runs-on: ubuntu-latest
     steps:
-      # Checkout current repository with full history
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Required for git diff to work
-          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
-      # Setup Python for the OpenAI dependency
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      # Use your markdown improver action
-      - name: Improve Markdown
+      - name: Run Markdown Improver
         uses: Darshan-222004/darshan-md-improver@main
         with:
           repo: "${{ github.repository }}"
@@ -31,7 +22,3 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Optional: Show the changes made
-      - name: Show diff
-        run: git diff HEAD~1 -- README.md || echo "No changes made"
