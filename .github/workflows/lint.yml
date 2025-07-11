@@ -1,0 +1,20 @@
+name: Lint Markdown and YAML
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # ✅ Lint Markdown files
+      - name: Lint Markdown
+        uses: actionshub/markdownlint@main
+
+      # ✅ Lint Workflow YAMLs
+      - name: Lint Workflow YAML files
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: ".github/workflows/"
