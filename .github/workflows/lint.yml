@@ -15,15 +15,17 @@ jobs:
         with:
           additional_files: ./entrypoint.sh
 
-      # ✅ Yamllint for action.yml
-      - name: Lint action.yml
+      # ✅ Yamllint for action.yml (only if file exists)
+      - name: Lint action.yml (optional)
+        if: ${{ hashFiles('action.yml') != '' }}
         uses: ibiqlik/action-yamllint@v3
         with:
           file_or_dir: action.yml
 
-      # ✅ Markdownlint (ignore test file)
-      - name: Lint markdown files (skip test)
+      # ✅ Markdownlint, ignoring sample.md
+      - name: Lint markdown files
         uses: actionshub/markdownlint@main
         with:
           filesToIgnoreRegex: "sample\\.md"
+
 
